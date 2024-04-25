@@ -66,4 +66,4 @@ async function deleteRoom (req, res){
 
 
 // Exporto las funciones
-export { createRoom, getAllRooms, getRoomById, updateRoom, deleteRoom}
+export {createRoom, getAllRooms, getRoomById, updateRoom, deleteRoom}
