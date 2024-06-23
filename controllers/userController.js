@@ -112,4 +112,4 @@ async function deleteUser (req, res){
 
 
 // Exporto las funciones
-export { createUser, getAllUsers, getUserById, updateUser, deleteUser}
+export { createUser, getAllUsers, getUserById, updateUser, deleteUser, login}

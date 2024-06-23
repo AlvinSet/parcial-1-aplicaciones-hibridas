@@ -1,13 +1,17 @@
 import express from "express";
-import { createUser, deleteUser, getAllUsers, getUserById, updateUser} from "../controllers/userController.js";
+import { createUser, login, deleteUser, getAllUsers, getUserById, updateUser} from "../controllers/userController.js";
 
 const router = express.Router();
 
-// Retorna todos los productos
+// Retorna todos los usuarios
 router.get('/', getAllUsers);
 
-// Agregar un Producto
+// Agregar un usuario
 router.post('/', createUser);
+
+// Login
+router.post('/login', login);
+
 
 //Obtener por Id
 router.get('/:id', getUserById);
