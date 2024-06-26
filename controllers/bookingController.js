@@ -1,5 +1,5 @@
 import Booking from '../models/bookingModel.js';
-import Room from '../models/bookingModel.js';
+import Room from '../models/roomModel.js';
 
 // Crear una nueva reserva
 async function createBooking( req, res  ){

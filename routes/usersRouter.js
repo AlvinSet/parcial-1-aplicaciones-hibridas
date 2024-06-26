@@ -1,5 +1,6 @@
 import express from "express";
-import { createUser, login, deleteUser, getAllUsers, getUserById, updateUser} from "../controllers/userController.js";
+import { createUser, login, deleteUser, getAllUsers, getUserById, updateUser, getUserProfile} from "../controllers/userController.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -12,6 +13,8 @@ router.post('/', createUser);
 // Login
 router.post('/login', login);
 
+// Profile
+router.get('/profile', auth, getUserProfile); 
 
 //Obtener por Id
 router.get('/:id', getUserById);

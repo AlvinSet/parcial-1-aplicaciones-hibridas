@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 // Crear un nuevo usuario
 
 const salt= 10;
-const secreyKey = 'appHotel';
+const secretKey = 'appHotel';
 
 async function createUser( req, res  ){
     try {
@@ -45,8 +45,17 @@ async function login (req, res){
         if (!pass) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-        const token = jwt.sign({userId: user._id, email: user.email},secretKey, {expiresIn: 'ih'});
-        res.status(200).json({ message: 'ok', data: {token: token}});
+        const token = jwt.sign({userId: user._id, email: user.email},secretKey, {expiresIn: '1h'});
+        console.log("Generated token:", token);
+        console.log("User data:", user);
+        res.status(200).json({token: token, user: {
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            bookings: user.bookings
+        }});
+        // console.log("Token:", token);
+
 
     } catch (error) {
         console.error(error);
@@ -110,6 +119,19 @@ async function deleteUser (req, res){
     }
 }
 
+async function getUserProfile(req, res) {
+    try {
+        // El ID del usuario se recupera del token JWT, que es procesado por el middleware 'auth'
+        const user = await User.findById(req.user.userId).select('-password');  // Excluye la contraseña por seguridad
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+}
 
 // Exporto las funciones
-export { createUser, getAllUsers, getUserById, updateUser, deleteUser, login}
+export { createUser, getAllUsers, getUserById, updateUser, deleteUser, login, getUserProfile}
