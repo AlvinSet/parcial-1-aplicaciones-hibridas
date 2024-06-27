@@ -25,8 +25,10 @@ const userSchema = new mongoose.Schema({
         unique: true,
         minlength: [10, "Phone number cannot be shorter than 10 digits"],
         maxlength: [15, "Phone number cannot exceed 15 digits"]},
-    bookings: { type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Booking' }
+    bookings:  [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Booking'
+    }]
 })
 
 

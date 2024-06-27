@@ -20,9 +20,9 @@ router.get('/profile', auth, getUserProfile);
 router.get('/:id', getUserById);
 
 //Actualizar por Id
-router.put('/:id', updateUser);
+router.put('/:id' , auth, updateUser);
 
 //Obtener por Id
-router.delete('/:id', deleteUser);
+router.delete('/:id', auth, deleteUser);
 
 export default router;

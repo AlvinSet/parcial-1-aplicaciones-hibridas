@@ -2,13 +2,15 @@ import express from 'express';
 import mongoose from 'mongoose';
 import routes from './routes/index.js';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;;
 
 const corsOptions = {
-    origin: 'http://localhost:5173',  // Permite solicitudes de tu frontend
+    origin: process.env.CORS_ORIGIN,  // Permite solicitudes de tu frontend
     optionsSuccessStatus: 200  // Algunos navegadores antiguos (IE11, varios SmartTVs) se ahogan en 204
 };
 
@@ -18,7 +20,7 @@ app.use( express.json() );
 
 
 // MongoDB connection
-mongoose.connect('mongodb://127.0.0.1:27017/hotelDB', {
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

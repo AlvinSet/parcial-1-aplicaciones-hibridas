@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 // Crear un nuevo usuario
 
 const salt= 10;
-const secretKey = 'appHotel';
+
 
 async function createUser( req, res  ){
     try {
@@ -45,7 +45,7 @@ async function login (req, res){
         if (!pass) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-        const token = jwt.sign({userId: user._id, email: user.email},secretKey, {expiresIn: '1h'});
+        const token = jwt.sign({userId: user._id, email: user.email},process.env.JWT_SECRET, {expiresIn: '1h'});
         console.log("Generated token:", token);
         console.log("User data:", user);
         res.status(200).json({token: token, user: {
