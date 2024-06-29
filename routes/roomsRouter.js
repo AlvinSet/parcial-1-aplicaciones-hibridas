@@ -5,13 +5,13 @@ import auth from "../middleware/auth.js";
 const router = express.Router();
 
 // Retorna todas las habitaciones
-router.get('/',auth, getAllRooms);
+router.get('/', auth, getAllRooms);
 
 // Agregar una habitacion
-router.post('/',auth, createRoom);
+router.post('/', auth, createRoom);
 
 //Obtener por Id
-router.get('/:id', getRoomById);
+router.get('/:id', auth, getRoomById);
 
 //Actualizar por Id
 router.put('/:id', updateRoom);

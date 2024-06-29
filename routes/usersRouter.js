@@ -17,7 +17,7 @@ router.post('/login', login);
 router.get('/profile', auth, getUserProfile); 
 
 //Obtener por Id
-router.get('/:id', getUserById);
+router.get('/:id', auth, getUserById);
 
 //Actualizar por Id
 router.put('/:id' , auth, updateUser);

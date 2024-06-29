@@ -1,29 +1,65 @@
 import Booking from '../models/bookingModel.js';
 import Room from '../models/roomModel.js';
+import User from '../models/userModel.js';
+import Service from '../models/serviceModel.js';
 
 // Crear una nueva reserva
-async function createBooking( req, res  ){
+async function createBooking(req, res) {
     try {
-        const newBooking = new Booking(req.body);
-        await newBooking.save();
+        const { roomId, startDate, endDate, services, totalPrice } = req.body;
+        const client = req.user.userId; // Extrae el ID del usuario del token
 
-        res.status(201).json({ newBooking});
+        console.log('Received Data:', { client, roomId, startDate, endDate, services, totalPrice });
+
+        // Verificar si la habitación existe
+        const room = await Room.findById(roomId);
+        if (!room) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        // Verificar si el cliente existe
+        const user = await User.findById(client);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Verificar si los servicios existen
+        const serviceList = await Service.find({ '_id': { $in: services } });
+        if (serviceList.length !== services.length) {
+            return res.status(404).json({ message: "One or more services not found" });
+        }
+
+        // Crear una nueva reserva
+        const newBooking = new Booking({
+            client,
+            room: roomId,
+            services,
+            startDate,
+            endDate,
+            totalPrice
+        });
+
+        await newBooking.save();
+        res.status(201).json(newBooking);
 
     } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: error, data: []});
+        console.error('Error creating booking:', error);
+        res.status(400).json({ message: "Error creating booking", error });
     }
 }
 
-// Obtener todos las reservas
-async function getAllBookings  (req, res){
+// Obtener todas las reservas
+async function getAllBookings(req, res) {
     try {
-        const bookings = await Booking.find();
-        res.status(200).json({ message: 'Ok', data: bookings});
+        const bookings = await Booking.find()
+            .populate('client', 'name email')
+            .populate('room', 'number type')
+            .populate('services', 'name price');
+        res.status(200).json(bookings);
     } catch (error) {
-        res.status(500).send({ message: error, data: []});
+        res.status(500).send({ message: error, data: [] });
     }
-};
+}
 
 //obtener una reserva por ID
 async function getBookingById (req, res){
