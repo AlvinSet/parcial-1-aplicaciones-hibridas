@@ -6,7 +6,7 @@ async function createService( req, res  ){
         const newService = new Service(req.body);
         await newService.save();
 
-        res.status(201).json({ newService});
+        res.status(201).json(newService);
 
     } catch (error) {
         console.error(error);
@@ -18,7 +18,7 @@ async function createService( req, res  ){
 async function getAllServices  (req, res){
     try {
         const services = await Service.find();
-        res.status(200).json({ message: 'Ok', data: services});
+        res.status(200).json(services);
     } catch (error) {
         res.status(500).send({ message: error, data: []});
     }
