@@ -6,7 +6,7 @@ async function createRoom( req, res  ){
         const newRoom = new Room(req.body);
         await newRoom.save();
 
-        res.status(201).json({ newRoom});
+        res.status(201).json(newRoom);
 
     } catch (error) {
         console.error(error);
@@ -18,7 +18,7 @@ async function createRoom( req, res  ){
 async function getAllRooms  (req, res){
     try {
         const rooms = await Room.find();
-        res.status(200).json({ message: 'Ok', data: rooms});
+        res.status(200).json(rooms);
     } catch (error) {
         res.status(500).send({ message: error, data: []});
     }

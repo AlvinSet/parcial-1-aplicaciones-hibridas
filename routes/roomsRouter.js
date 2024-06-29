@@ -1,13 +1,14 @@
 import express from "express";
 import {createRoom, getAllRooms, getRoomById, updateRoom, deleteRoom} from "../controllers/roomController.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
 // Retorna todas las habitaciones
-router.get('/', getAllRooms);
+router.get('/',auth, getAllRooms);
 
 // Agregar una habitacion
-router.post('/', createRoom);
+router.post('/',auth, createRoom);
 
 //Obtener por Id
 router.get('/:id', getRoomById);
