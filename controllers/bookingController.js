@@ -76,16 +76,15 @@ async function getBookingById (req, res){
 
 //actualizar una reserva
 async function updateBooking (req, res){
-try {
-    const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true } );
-if (!booking){
-    return res.status(404).send("Booking not found.")
-}
-res.status(200).json(booking);
-
-} catch (error) {
-    res.status(400).send(error.message);
-}
+    try {
+        const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('client room services');
+        if (!booking){
+            return res.status(404).send("Booking not found.")
+        }
+        res.status(200).json(booking);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
 };
 
 //Eliminar reserva
