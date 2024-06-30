@@ -40,6 +40,10 @@ async function createBooking(req, res) {
         });
 
         await newBooking.save();
+
+        user.bookings.push(newBooking._id);
+        await user.save();
+
         res.status(201).json(newBooking);
 
     } catch (error) {

@@ -35,7 +35,13 @@ async function login (req, res){
     try {
         const {email, password} = req.body;
 
-        const user = await User.findOne({email});
+        const user = await User.findOne({ email }).populate({
+            path: 'bookings',
+            populate: [
+                { path: 'room', select: 'number type' },  // Popula los detalles de la habitación
+                { path: 'services', select: 'name price' }  // Popula los detalles de los servicios
+            ]
+        });
 
         if(!user){
             return res.status(404).json({ message: "User not found" });
@@ -121,11 +127,20 @@ async function deleteUser (req, res){
 
 async function getUserProfile(req, res) {
     try {
-        // El ID del usuario se recupera del token JWT, que es procesado por el middleware 'auth'
-        const user = await User.findById(req.user.userId).select('-password');  // Excluye la contraseña por seguridad
+        const user = await User.findById(req.user.userId)
+            .populate({
+                path: 'bookings',
+                populate: [
+                    { path: 'room', model: 'Room' },
+                    { path: 'services', model: 'Service' }
+                ]
+            })
+            .select('-password');  // Excluye la contraseña por seguridad
+        
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
+
         res.json(user);
     } catch (error) {
         console.error(error);
