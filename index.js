@@ -10,8 +10,8 @@ const app = express();
 const port = process.env.PORT;
 
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN,  // Permite solicitudes de tu frontend
-    optionsSuccessStatus: 200  // Algunos navegadores antiguos (IE11, varios SmartTVs) se ahogan en 204
+    origin: process.env.CORS_ORIGIN,  // Permite solicitudes del frontend
+    optionsSuccessStatus: 200 
 };
 
 
